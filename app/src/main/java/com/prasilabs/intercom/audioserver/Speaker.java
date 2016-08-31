@@ -10,7 +10,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-public class Speaker extends Thread {
+public class Speaker extends Thread
+{
     private int audioFormat;
     private int channelConfig;
     int minBufSize;
@@ -32,7 +33,8 @@ public class Speaker extends Thread {
             DatagramSocket dsk = new DatagramSocket(this.port);
             DatagramPacket dgp = new DatagramPacket(data, data.length);
             AudioTrack speaker = new AudioTrack(0, this.sampleRate, this.channelConfig, this.audioFormat, this.minBufSize, 1);
-            while (true) {
+            while (true)
+            {
                 dsk.receive(dgp);
                 speaker.write(dgp.getData(), 0, this.minBufSize);
                 System.out.println("Playing");
