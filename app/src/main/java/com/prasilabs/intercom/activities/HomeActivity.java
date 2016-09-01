@@ -16,10 +16,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.prasilabs.intercom.R;
-import com.prasilabs.intercom.audioserver.Speaker;
 import com.prasilabs.intercom.core.CoreActivity;
 import com.prasilabs.intercom.core.CorePresenter;
 import com.prasilabs.intercom.customs.FragmentNavigator;
+import com.prasilabs.intercom.mainServer.MainService;
 import com.prasilabs.intercom.managers.UserManager;
 import com.prasilabs.intercom.modules.home.view.HomeFragment;
 
@@ -62,8 +62,7 @@ public class HomeActivity extends CoreActivity implements NavigationView.OnNavig
 
         FragmentNavigator.navigateToFragment(this, HomeFragment.getInstance(), false, R.id.container);
 
-        Speaker audioServer = new Speaker();
-        audioServer.start();
+        MainService.startMainService(this);
     }
 
     @Override
@@ -97,7 +96,8 @@ public class HomeActivity extends CoreActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 

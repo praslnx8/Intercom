@@ -5,15 +5,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.prasilabs.intercom.R;
-import com.prasilabs.intercom.audioserver.ScanIP;
 import com.prasilabs.intercom.core.CoreFragment;
 import com.prasilabs.intercom.customs.CircularProgressBar;
 import com.prasilabs.intercom.modules.home.presenter.HomePresenter;
 import com.prasilabs.intercom.pojo.UserInfo;
-import com.prasilabs.intercom.services.network.IntercomWifiManager;
 
 import java.util.List;
 
@@ -32,6 +32,22 @@ public class HomeFragment extends CoreFragment<HomePresenter> implements HomePre
     protected TextView ipText;
     @BindView(R.id.circularprogressbar)
     protected CircularProgressBar circularProgressBar;
+
+    @BindView(R.id.no_users_layout)
+    protected LinearLayout noUsersLayout;
+    @BindView(R.id.list_view_layout)
+    protected LinearLayout listViewLayout;
+    @BindView(R.id.no_wifi_layout)
+    protected LinearLayout noWifiLayout;
+    @BindView(R.id.progress_layout)
+    protected LinearLayout progressLayout;
+    @BindView(R.id.content_layout)
+    LinearLayout contentLayout;
+    @BindView(R.id.ip_list_view)
+    ListView ipListView;
+
+
+    private IpListAdapter ipListAdapter;
 
     public static HomeFragment getInstance()
     {
@@ -56,8 +72,8 @@ public class HomeFragment extends CoreFragment<HomePresenter> implements HomePre
         {
             setFragmentView(inflater.inflate(R.layout.fragment_home, container, false));
 
-            ScanIP scanIP = new ScanIP(getContext());
-            //scanIP.start();
+            ipListAdapter = new IpListAdapter(getContext());
+            ipListView.setAdapter(ipListAdapter);
 
             getPresenter().init();
         }
@@ -71,25 +87,46 @@ public class HomeFragment extends CoreFragment<HomePresenter> implements HomePre
     }
 
     @Override
-    public void setWifiName()
+    public void setWifiName(String wifiName, String ipAddress)
     {
-        String wifiName = IntercomWifiManager.getWifiName(getContext());
-
-        String ip = IntercomWifiManager.getWifiIp(getContext());
-
         if(wifiName != null)
         {
             wifiText.setText(wifiName);
         }
-        if(ip != null)
+        if(ipAddress != null)
         {
-            ipText.setText(ip);
+            ipText.setText(ipAddress);
         }
     }
 
     @Override
-    public void startScan() {
+    public void showEnableWifiScreen()
+    {
+        contentLayout.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.GONE);
+        noWifiLayout.setVisibility(View.VISIBLE);
+        listViewLayout.setVisibility(View.GONE);
+        noUsersLayout.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void showEmptyPageScreen()
+    {
+        contentLayout.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
+        noWifiLayout.setVisibility(View.GONE);
+        listViewLayout.setVisibility(View.GONE);
+        noUsersLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showScanning()
+    {
+        contentLayout.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.VISIBLE);
+        noWifiLayout.setVisibility(View.GONE);
+        listViewLayout.setVisibility(View.GONE);
+        noUsersLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -102,6 +139,12 @@ public class HomeFragment extends CoreFragment<HomePresenter> implements HomePre
     @Override
     public void showUsersList(List<UserInfo> userInfos)
     {
+        contentLayout.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
+        noWifiLayout.setVisibility(View.GONE);
+        listViewLayout.setVisibility(View.VISIBLE);
+        noUsersLayout.setVisibility(View.GONE);
 
+        ipListAdapter.cearAndAddUsers(userInfos);
     }
 }

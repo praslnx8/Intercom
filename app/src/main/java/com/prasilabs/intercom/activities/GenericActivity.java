@@ -13,7 +13,8 @@ import com.prasilabs.intercom.core.CoreFragment;
 import com.prasilabs.intercom.core.CorePresenter;
 import com.prasilabs.intercom.customs.FragmentNavigator;
 import com.prasilabs.intercom.debug.ConsoleLog;
-import com.prasilabs.intercom.modules.login.view.LoginFragment;
+import com.prasilabs.intercom.modules.call.view.CallFragment;
+import com.prasilabs.intercom.pojo.UserInfo;
 
 import butterknife.BindView;
 
@@ -25,7 +26,7 @@ public class GenericActivity extends CoreActivity
     private static final String REQUEST_FOR = "requestFor";
     private static final String ID_STR = "id";
 
-    public static final int REQUEST_FOR_LOGIN = 1;
+    public static final int REQUEST_FOR_CALL = 1;
 
 
     private int requestFor = 0;
@@ -37,10 +38,14 @@ public class GenericActivity extends CoreActivity
     @BindView(R.id.container)
     LinearLayout container;
 
-    public static void openLogin(Context context)
+    public static void openCall(Context context, UserInfo userInfo, boolean isIncoming)
     {
         Intent intent = new Intent(context, GenericActivity.class);
-        intent.putExtra(REQUEST_FOR, REQUEST_FOR_LOGIN);
+        intent.putExtra(REQUEST_FOR, REQUEST_FOR_CALL);
+        intent.putExtra("IP", userInfo.getIp());
+        intent.putExtra("NAME", userInfo.getName());
+        intent.putExtra("IMAGE", userInfo.getPic());
+        intent.putExtra("IS_INCOMING", isIncoming);
         context.startActivity(intent);
     }
 
@@ -59,7 +64,7 @@ public class GenericActivity extends CoreActivity
         }
 
 
-        if(requestFor == REQUEST_FOR_LOGIN)
+        if(requestFor == REQUEST_FOR_CALL)
         {
             if(getSupportActionBar() != null)
             {
@@ -67,7 +72,17 @@ public class GenericActivity extends CoreActivity
             }
 
 
-            coreFragment = LoginFragment.newInstance();
+            String ip = bundle.getString("IP");
+            String name = bundle.getString("NAME");
+            String image = bundle.getString("IMAGE");
+            boolean isIncoming = bundle.getBoolean("IS_INCOMING");
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setIp(ip);
+            userInfo.setName(name);
+            userInfo.setPic(image);
+
+            coreFragment = CallFragment.newInstance(userInfo, isIncoming);
             FragmentNavigator.navigateToFragment(this, coreFragment, false, container.getId());
         }
         else

@@ -25,7 +25,7 @@ public abstract class CoreActivity<T extends CorePresenter> extends AppCompatAct
         corePresenter = setCorePresenter();
         if(corePresenter != null)
         {
-            corePresenter.onCreate();
+            corePresenter.onCreate(this);
         }
     }
 

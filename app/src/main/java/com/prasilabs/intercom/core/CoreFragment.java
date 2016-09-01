@@ -51,7 +51,7 @@ public abstract class CoreFragment<T extends CorePresenter> extends Fragment
         corePresenter = setCorePresenter();
         if(corePresenter != null)
         {
-            corePresenter.onCreate();
+            corePresenter.onCreate(getContext());
         }
     }
 

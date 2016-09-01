@@ -1,56 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:circular="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
+        android:id="@+id/content_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <com.prasilabs.intercom.core.CoreTextView
-                android:id="@+id/wifi_text"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wifi"/>
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <com.prasilabs.intercom.core.CoreTextView
-                android:id="@+id/ip_text"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="192.1678.1.1"/>
+                <com.prasilabs.intercom.core.CoreTextView
+                    android:id="@+id/wifi_text"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wifi"/>
+
+                <com.prasilabs.intercom.core.CoreTextView
+                    android:id="@+id/ip_text"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="192.1678.1.1"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <LinearLayout
+            android:id="@+id/progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <com.prasilabs.intercom.customs.CircularProgressBar
+                android:id="@+id/circularprogressbar"
+                style="@style/Widget.ProgressBar.Holo.CircularProgressBar"
+                android:layout_width="200dip"
+                android:layout_height="200dip"
+                circular:cpb_title="Title"
+                android:padding="4dp"
+                circular:cpb_titleColor="green"
+                circular:cpb_strokeWidth="40"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:id="@+id/list_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <ListView
+                android:id="@+id/ip_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        </LinearLayout>
 
-        <com.prasilabs.intercom.customs.CircularProgressBar
-            android:id="@+id/circularprogressbar"
-            style="@style/Widget.ProgressBar.Holo.CircularProgressBar"
-            android:layout_width="200dip"
-            android:layout_height="200dip"
-            circular:cpb_subtitle="subtitle"
-            circular:cpb_title="Title"
-            android:padding="4dp"
-            circular:cpb_titleColor="green"
-            circular:cpb_strokeWidth="40"
-            android:layout_gravity="center"/>
+        <LinearLayout
+            android:id="@+id/no_users_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <com.prasilabs.intercom.core.CoreTextView
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No users found..."/>
+
+            <com.prasilabs.intercom.core.CoreTextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share this app to your friends to enjoy intercom calling"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/no_wifi_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <com.prasilabs.intercom.customs.FontAweSomeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="80sp"
+            android:text="@string/fa_exclamation_triangle"/>
+
+        <com.prasilabs.intercom.core.CoreTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please connect to wifi to enjoy intercom calling"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OPEN WIFI"/>
+
+    </LinearLayout>
+
+</FrameLayout>

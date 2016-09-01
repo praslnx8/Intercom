@@ -112,7 +112,11 @@ public class LoginFragment extends CoreFragment<LoginPresenter> implements Googl
             GoogleSignInAccount acct = result.getSignInAccount();
 
             String name = acct.getDisplayName();
-            String pictureUrl = acct.getPhotoUrl().toString();
+            String pictureUrl = null;
+            if(acct.getPhotoUrl() != null)
+            {
+                pictureUrl = acct.getPhotoUrl().toString();
+            }
 
             UserManager.saveUserData(getContext(), name, pictureUrl);
 

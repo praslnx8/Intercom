@@ -16,11 +16,13 @@ public abstract class CorePresenter
 {
     private static final String TAG = CorePresenter.class.getSimpleName();
     private BroadcastReceiver broadcastReceiver;
+    private Context context;
 
     public CorePresenter(){}
 
-    protected void onCreate()
+    protected void onCreate(Context context)
     {
+        this.context = context;
         broadcastReceiver = new BroadcastReceiver()
         {
             @Override
@@ -39,7 +41,7 @@ public abstract class CorePresenter
     {
         if(CoreApp.getAppContext() != null)
         {
-            LocalBroadcastManager.getInstance(CoreApp.getAppContext()).registerReceiver(broadcastReceiver, intentFilter);
+            LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, intentFilter);
         }
         else
         {
@@ -53,7 +55,11 @@ public abstract class CorePresenter
     {
         if(broadcastReceiver != null)
         {
-            LocalBroadcastManager.getInstance(CoreApp.getAppContext()).unregisterReceiver(broadcastReceiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver);
         }
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

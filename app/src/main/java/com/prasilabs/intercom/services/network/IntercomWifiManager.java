@@ -1,6 +1,7 @@
 package com.prasilabs.intercom.services.network;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -9,8 +10,6 @@ import com.prasilabs.intercom.debug.ConsoleLog;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Created by prasi on 31/8/16.
@@ -41,8 +40,13 @@ public class IntercomWifiManager
 
             WifiInfo wifiinfo = manager.getConnectionInfo();
             byte[] myIPAddress = BigInteger.valueOf(wifiinfo.getIpAddress()).toByteArray();
-            Collections.reverse(Arrays.asList(myIPAddress));
-            InetAddress myInetIP = InetAddress.getByAddress(myIPAddress);
+            byte[] reversedAddress = new byte[myIPAddress.length];
+            for(int i=0; i<myIPAddress.length; i++)
+            {
+                reversedAddress[i] = myIPAddress[(myIPAddress.length-1) - i];
+            }
+
+            InetAddress myInetIP = InetAddress.getByAddress(reversedAddress);
             String myIP = myInetIP.getHostAddress();
 
             return myIP;
@@ -53,5 +57,30 @@ public class IntercomWifiManager
         }
 
         return null;
+    }
+
+    public static boolean isWifiConnected(Context context)
+    {
+        boolean isConnnected = false;
+
+        try {
+            ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = conMan.getActiveNetworkInfo();
+
+            if(netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI && netInfo.isConnected())
+            {
+                isConnnected = true;
+            }
+            else
+            {
+                isConnnected = false;
+            }
+        }catch (Exception e)
+        {
+            ConsoleLog.e(e);
+        }
+
+
+        return isConnnected;
     }
 }
