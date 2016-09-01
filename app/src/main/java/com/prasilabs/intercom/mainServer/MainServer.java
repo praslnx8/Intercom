@@ -86,7 +86,7 @@ public class MainServer extends Thread
                                 os.writeUTF("ready");
                                 if(userInfo != null)
                                 {
-                                    CallView.showIncominCallView(context, userInfo, true, new CallView.CallListener() {
+                                    CallView.showIncominCallView(context, userInfo, new CallView.CallListener() {
                                         @Override
                                         public void ended()
                                         {

@@ -9,19 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.prasilabs.intercom.R;
-import com.prasilabs.intercom.audioserver.Mic;
-import com.prasilabs.intercom.audioserver.Speaker;
-import com.prasilabs.intercom.constants.CommonConstant;
-import com.prasilabs.intercom.customs.JsonUtil;
-import com.prasilabs.intercom.debug.ConsoleLog;
-import com.prasilabs.intercom.managers.UserManager;
 import com.prasilabs.intercom.modules.call.view.CallView;
 import com.prasilabs.intercom.pojo.UserInfo;
 import com.prasilabs.intercom.utils.ViewUtil;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,66 +87,7 @@ public class IpListAdapter extends BaseAdapter
                 @Override
                 public void onClick(View view)
                 {
-                    try
-                    {
-                        final Socket socket = new Socket(userInfo.getIp(), CommonConstant.MAIN_PORT);
-
-                        if(socket.isConnected())
-                        {
-                            final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                            final DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-
-                            dataOutputStream.writeUTF("callingu");
-                            dataOutputStream.writeUTF(String.valueOf(JsonUtil.getJsonFromClass(UserManager.getMyInfo(context))));
-
-                            String reply = dataInputStream.readUTF();
-
-                            if(reply.equalsIgnoreCase("busy"))
-                            {
-                                ViewUtil.t(context, "user is busy");
-                                dataInputStream.close();
-                                dataOutputStream.close();
-                                socket.close();
-                            }
-                            else
-                            {
-                                final Speaker speaker = new Speaker();
-                                speaker.start();
-
-                                final Mic mic = new Mic(userInfo.getIp());
-                                mic.start();
-
-                                CallView.showIncominCallView(context, userInfo, false, new CallView.CallListener() {
-                                    @Override
-                                    public void ended()
-                                    {
-                                        try
-                                        {
-                                            mic.interrupt();
-                                            speaker.interrupt();
-                                            dataInputStream.close();
-                                            dataOutputStream.close();
-                                            socket.close();
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            ConsoleLog.e(e);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                        else
-                        {
-                            ViewUtil.t(context, "It seeems user went offline :( ");
-                            socket.close();
-                        }
-                    }catch (Exception e)
-                    {
-                        ConsoleLog.e(e);
-
-                        ViewUtil.t(context, "It seems user went offline");
-                    }
+                    CallView.showCallView(context, userInfo);
                 }
             });
         }

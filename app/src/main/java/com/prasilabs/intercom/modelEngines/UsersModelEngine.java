@@ -135,7 +135,10 @@ public class UsersModelEngine extends CoreModelEngine
                 {
                     if(scanUserCallBack != null)
                     {
-                        scanUserCallBack.usersFound(userInfoList);
+                        if(IntercomWifiManager.isWifiConnected(CoreApp.getAppContext()))
+                        {
+                            scanUserCallBack.usersFound(userInfoList);
+                        }
                     }
                 }
             }
@@ -261,15 +264,19 @@ public class UsersModelEngine extends CoreModelEngine
         {
             super.onProgressUpdate(values);
 
-            int ipCount = 0;
-            if(values.length > 0)
-            {
-                ipCount = values[0];
-            }
-
             if(scanAsyncCallBack != null)
             {
                 scanAsyncCallBack.scanCount();
+            }
+        }
+
+        @Override
+        protected void onCancelled(Void aVoid) {
+            super.onCancelled(aVoid);
+
+            if(scanAsyncCallBack != null)
+            {
+                scanAsyncCallBack.finished(thread);
             }
         }
 

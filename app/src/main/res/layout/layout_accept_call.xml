@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/lgray3">
 
     <ImageView
         android:id="@+id/user_image"
@@ -32,6 +33,10 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:background="@color/red"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="0dp" />
 
         <Button
             android:id="@+id/accept_btn"
