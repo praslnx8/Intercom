@@ -5,19 +5,23 @@
     android:gravity="center">
 
     <ImageView
+        android:id="@+id/user_image"
         android:layout_width="200dp"
         android:layout_height="200dp" />
 
     <com.prasilabs.intercom.core.CoreTextView
+        android:id="@+id/name_text"
         style="@style/TextAppearance.AppCompat.Display1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"/>
 
     <LinearLayout
+        android:id="@+id/accept_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="4dp">
 
         <Button
             android:id="@+id/reject_btn"
@@ -38,6 +42,23 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:background="@color/green"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/end_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/end_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="END"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:background="@color/red"/>
 
     </LinearLayout>
 

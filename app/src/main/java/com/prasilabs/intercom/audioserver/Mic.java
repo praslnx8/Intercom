@@ -3,6 +3,9 @@ package com.prasilabs.intercom.audioserver;
 import android.media.AudioRecord;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.Log;
+
+import com.prasilabs.intercom.constants.CommonConstant;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -16,14 +19,13 @@ public class Mic extends Thread {
     private int channelConfig;
     public String ip;
     int minBufSize;
-    private int port;
+    private static final int port = CommonConstant.MAIN_PORT + 1;
     AudioRecord recorder;
     private int sampleRate;
 
     public Mic(String ip)
     {
         this.ip = ip;
-        this.port = 55001;
         this.sampleRate = 44100;
         this.channelConfig = 2;
         this.audioFormat = 2;

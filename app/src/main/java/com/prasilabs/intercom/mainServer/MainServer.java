@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.prasilabs.intercom.constants.CommonConstant;
 import com.prasilabs.intercom.customs.JsonUtil;
+import com.prasilabs.intercom.debug.ConsoleLog;
 import com.prasilabs.intercom.managers.UserManager;
 import com.prasilabs.intercom.modelEngines.UsersModelEngine;
 import com.prasilabs.intercom.modules.call.view.CallView;
@@ -40,13 +41,13 @@ public class MainServer extends Thread
             {
                 try
                 {
-                    Socket socket = serverSocket.accept();
+                    final Socket socket = serverSocket.accept();
 
                     String ipAddr = socket.getInetAddress().toString(); //TODO
                     UsersModelEngine.getInstance().scanUser(ipAddr);
 
-                    DataInputStream is = new DataInputStream(socket.getInputStream());
-                    DataOutputStream os = new DataOutputStream(socket.getOutputStream());
+                    final DataInputStream is = new DataInputStream(socket.getInputStream());
+                    final DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 
                     while (socket.isConnected())
                     {
@@ -82,22 +83,36 @@ public class MainServer extends Thread
                             }
                             else
                             {
+                                os.writeUTF("ready");
                                 if(userInfo != null)
                                 {
-                                    CallView.showIncominCallView(context, userInfo);
+                                    CallView.showIncominCallView(context, userInfo, true, new CallView.CallListener() {
+                                        @Override
+                                        public void ended()
+                                        {
+                                            try
+                                            {
+                                                is.close();
+                                                os.close();
+                                                socket.close();
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                ConsoleLog.e(e);
+                                            }
+                                        }
+                                    });
 
                                 }
                             }
                         }
                         else
                         {
+                            is.close();
+                            os.close();
                             socket.close();
                         }
                     }
-
-                    is.close();
-                    os.close();
-                    socket.close();
 
                 }catch (Exception e)
                 {

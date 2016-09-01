@@ -5,6 +5,8 @@ import android.media.AudioTrack;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.Log;
 
+import com.prasilabs.intercom.constants.CommonConstant;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,12 +16,11 @@ public class Speaker extends Thread
 {
     private int audioFormat;
     private int channelConfig;
-    int minBufSize;
-    int port;
+    private int minBufSize;
+    private static final int port = CommonConstant.MAIN_PORT + 1;
     private int sampleRate;
 
     public Speaker() {
-        this.port = 55001;
         this.sampleRate = 44100;
         this.channelConfig = 1;
         this.audioFormat = 2;
