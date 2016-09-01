@@ -2,6 +2,7 @@ package com.prasilabs.intercom.modelEngines;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.os.AsyncTaskCompat;
 
 import com.prasilabs.intercom.constants.BroadCastConstant;
 import com.prasilabs.intercom.constants.CommonConstant;
@@ -145,10 +146,10 @@ public class UsersModelEngine extends CoreModelEngine
         ScanAsyncTask scanAsyncTask3 = new ScanAsyncTask(scanAsyncCallBack, 3);
         ScanAsyncTask scanAsyncTask4 = new ScanAsyncTask(scanAsyncCallBack, 4);
 
-        scanAsyncTask1.execute();
-        scanAsyncTask2.execute();
-        scanAsyncTask3.execute();
-        scanAsyncTask4.execute();
+        AsyncTaskCompat.executeParallel(scanAsyncTask1);
+        AsyncTaskCompat.executeParallel(scanAsyncTask2);
+        AsyncTaskCompat.executeParallel(scanAsyncTask3);
+        AsyncTaskCompat.executeParallel(scanAsyncTask4);
     }
 
     public List<UserInfo> getUserInfoList() {
